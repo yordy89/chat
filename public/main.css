@@ -1,0 +1,33 @@
+body{
+    background-color: black;
+    color: white;
+}
+#container-chat{
+   max-width: 600px;
+   margin-left: 200px;
+   border: 1px solid blue;
+}
+#chat-windows{
+    min-height: 400px;
+    max-width: 200px;
+    background-color: white;
+    margin-left: 200px;
+    color: black;
+}
+.inputs-chat{
+    margin-top: auto;
+    margin-left: 200px;
+    
+}
+input{
+    display: block;
+    width: 200px;
+}
+button{
+    width: 200px;
+    font-size: 28px;
+    color: red;
+}
+#chat-action{
+    font-style: italic;
+}

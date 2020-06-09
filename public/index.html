@@ -4,10 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat</title>
+    <link rel="stylesheet" href="main.css">
 </head>
 <body>
-    <h1>Chatt</h1>
+    <div class="container-chat">
+        <div id="chat-windows">
+            <div id="chat-salida"></div>
+            <div id="chat-action"> </div>
+           
+           
+        </div>
+        <div class="inputs-chat">
+            <input type="text" id="username" placeholder="Escriba su usuario">
+            <input type="text" id="mensaje" placeholder="Escriba su mensaje">
+            <button id="send">Send</button>
+        </div>
+       
+    </div>
 
-    <script src="/socket.io/cocket.io.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
