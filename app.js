@@ -7,6 +7,18 @@ const server = require('http').Server(app)
 const config = require('./config')
 
 
+//Passport and Session
+import passport from 'passport'
+import session from 'express-session'
+require('./Passport/local-auth')
+app.use(session({
+    secret:'misessiosecreta',
+    resave:false,
+    saveUninitialized:false
+}))
+app.use(passport.initialize())
+app.use(passport.session())
+
 //BD
 import mongoose from 'mongoose'
 mongoose.connect(config.db.url,config.db.options)
@@ -34,8 +46,10 @@ app.use(function(req,res,next){
 app.use(express.static(path.join(__dirname,'public')))
 
 app.get('/',(req,res)=>{
-    res.send("Hello World")
+    res.send("Hello World")  
 })
+const api = require('./Routes')
+app.use('/api',api)
 
 //Middleware para vue
 const history = require('connect-history-api-fallback')
@@ -50,48 +64,5 @@ server.listen(config.port,()=>{
 
 const SocketIO = require('socket.io')
 const io = SocketIO(server)
-let users = []
-let messages = []
-let index = 0
-io.on('connection', socket=>{
-
- 
-   /*socket.emit('loggin', {
-       usuarios: users.map(s => s.username),
-       mensajes:messages
-   })*/
-   socket.on('newUser', usuario => {
-   socket.username = usuario
-   users.push(socket)
-   console.log(`${socket.username} se ha conectado`)
-   io.emit('userOnline', {
-    usuarios: users.map(s => s.username),
-    mensajes:messages
-})
-   })
-
-   socket.on('msg', msg => {
-       let message = {
-           index:index,
-           username:socket.username,
-           msg:msg
-       }
-       messages.push(message)
-     io.emit('msg',message)
-     index++
-   })
-
-   socket.on('disconnect', ()=>{
-       console.log(`${socket.username} se desconecto`)
-       io.emit('salio',socket.username)
-       users.splice(users.indexOf(socket),1)
-   })
-
-   socket.on('typing', username => {
-       socket.broadcast.emit('typing',username)
-   })
-   socket.on('stopTyping', () => {
-       socket.broadcast.emit('stopTyping')
-   })
-})
+ require('./socket')(io)
 
